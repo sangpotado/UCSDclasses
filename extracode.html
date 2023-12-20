@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Course Parser</title>
+</head>
+<body>
+
+<h2>Course Parser</h2>
+<label for="urlInput">Enter URL:</label>
+<input type="text" id="urlInput" placeholder="Enter URL">
+<button onclick="parseURL()">Parse</button>
+
+<div id="result"></div>
+
+<script>
+  function parseURL() {
+    // Get the URL from the input
+    const url = document.getElementById("urlInput").value;
+
+    // Fetch the HTML content from the provided URL
+    fetch(url)
+      .then(response => response.text())
+      .then(html => {
+        // Create a temporary HTML element to parse the content
+        const tempElement = document.createElement("div");
+        tempElement.innerHTML = html;
+
+        // Find all course elements in the HTML
+        const courseElements = tempElement.querySelectorAll(".course-name");
+
+        // Create an array to store course objects
+        const courses = [];
+
+        // Iterate through each course element and create the JSON object
+        courseElements.forEach(courseElement => {
+          const id = courseElement.nextElementSibling.querySelector(".anchor").id;
+          const name = courseElement.textContent.trim();
+          const unit = parseInt(name.match(/\((\d)\)/)[1], 10);
+          const description = courseElement.nextElementSibling.querySelector(".course-descriptions").textContent.trim();
+          const prerequisites = courseElement.nextElementSibling.querySelector(".course-descriptions .italic").textContent.trim().replace(/Prerequisites:/, '');
+
+          // Create the course object
+          const course = {
+            id: id,
+            name: name,
+            unit: unit,
+            description: description,
+            prerequisites: prerequisites
+          };
+
+          // Push the course object to the array
+          courses.push(course);
+        });
+
+        // Display the result
+        document.getElementById("result").innerHTML = JSON.stringify(courses, null, 2);
+      })
+      .catch(error => {
+        console.error("Error fetching data:", error);
+        document.getElementById("result").innerHTML = "Error fetching data. Please check the URL and try again.";
+      });
+  }
+</script>
+
+</body>
+</html>
