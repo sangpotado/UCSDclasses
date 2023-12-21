@@ -11,6 +11,7 @@ class Course {
         this.posY = 0;
         this.level = 0;
         this.parents = [];
+        this.isClicked = false;
     }
 
     // Additional constructor for a placeholder course
@@ -26,8 +27,11 @@ class Course {
 
     draw() {
         // Draw a ball for each course
-        fill(0, 150, 200);
-        ellipse(this.posX, this.posY, 40, 40);
+        if (this.isClicked) {
+            fill(150,200,0);
+        }
+        else {fill(0, 150, 200);}
+        ellipse(this.posX, this.posY, 50, 40);
 
         // Display the course ID inside the ball
         fill(255);
@@ -94,23 +98,3 @@ function parsePrerequisites(prerequisites) {
 //         });
 //     });
 // }
-
-
-
-
-// Fetch the JSON file asynchronously
-// let Courses = [];
-
-// fetch('output.json')
-//   .then(response => response.json())
-//   .then(data => {
-//     // Create an array of Courses objects
-//     Courses = data.map(course => new Course(course));
-
-//     // Call linkPrerequisites here, inside the then block
-//     // linkPrerequisites(Courses);
-
-//     // Additional code if needed after linkPrerequisites
-//     // ...
-//   })
-//   .catch(error => console.error('Error fetching JSON:', error));

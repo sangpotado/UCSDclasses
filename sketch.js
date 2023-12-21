@@ -56,7 +56,7 @@ function windowResized() {
 }
 
 function setCoursePositions(courses) {
-  const ballSize = 50;
+  const ballSize = 55;
   const margin = 20;
   const coursesPerRow = Math.floor((width - margin * 2) / ballSize);
   const coursesPerColumn = Math.floor((height - margin * 3) / ballSize);
